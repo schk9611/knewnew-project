@@ -41,7 +41,7 @@ class IntroductionTag(models.Model):
 
 class UserIntroductionTag(models.Model):
     user = models.ForeignKey('User', on_delete=models.CASCADE)
-    tag  = models.ForeignKey('IntroductionTag', on_delete=models.CASCADE)
+    introduction_tag  = models.ForeignKey('IntroductionTag', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'user_introduction_tags'
