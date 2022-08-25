@@ -8,6 +8,7 @@ class TimeStamp(models.Model):
     class Meta:
         abstract = True
 
+
 class CreatedTimeStamp(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 

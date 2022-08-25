@@ -1,7 +1,6 @@
-from tkinter import CASCADE
-from django.db import models
-from core.models import TimeStamp, CreatedTimeStamp
-from user.models import User
+from django.db   import models
+from app.core.models import TimeStamp
+
 
 class FoodTag(models.Model):
     name = models.CharField(max_length=20)
@@ -32,25 +31,25 @@ class Reaction(models.Model):
 
 
 class Review(TimeStamp):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    parent_review = models.ForeignKey('self', on_delete=models.SET_NULL, null=True)
-    reaction = models.ForeignKey('Reaction', on_delete=models.SET_NULL, null=True)
-    product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True)
-    retailer = models.ForeignKey('Retailer', on_delete=models.SET_NULL, null=True)
-    description = models.TextField()
-    view_count = models.IntegerField(default=0)
+    user            = models.ForeignKey('user.User', on_delete=models.CASCADE)
+    parent_review   = models.ForeignKey('self', on_delete=models.SET_NULL, null=True)
+    reaction        = models.ForeignKey('Reaction', on_delete=models.SET_NULL, null=True)
+    product         = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True)
+    retailer        = models.ForeignKey('Retailer', on_delete=models.SET_NULL, null=True)
+    description     = models.TextField()
+    view_count      = models.IntegerField(default=0)
     quotation_count = models.IntegerField(default=0)
-    like_count = models.IntegerField(default=0)
-    bookmark_count = models.IntegerField(default=0)
-    share_count = models.IntegerField(default=0)
-    is_active = models.BooleanField(default=False)
+    like_count      = models.IntegerField(default=0)
+    bookmark_count  = models.IntegerField(default=0)
+    share_count     = models.IntegerField(default=0)
+    is_active       = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'reviews'
 
 
 class ReviewFoodTag(models.Model):
-    review = models.ForeignKey('Review', on_delete=models.CASCADE)
+    review   = models.ForeignKey('Review', on_delete=models.CASCADE)
     food_tag = models.ForeignKey('FoodTag', on_delete=models.CASCADE)
 
     class Meta:
@@ -58,12 +57,12 @@ class ReviewFoodTag(models.Model):
 
 
 class Comment(TimeStamp):
-    review = models.ForeignKey('Review', on_delete=models.CASCADE)
+    review         = models.ForeignKey('Review', on_delete=models.CASCADE)
     parent_comment = models.ForeignKey('self', on_delete=models.SET_NULL, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    description = models.CharField(max_length=200)
-    like_count = models.IntegerField(default=0)
-    is_active = models.BooleanField(default=True)
+    user           = models.ForeignKey('user.User', on_delete=models.CASCADE)
+    description    = models.CharField(max_length=200)
+    like_count     = models.IntegerField(default=0)
+    is_active      = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'comments'
