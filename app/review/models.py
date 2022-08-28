@@ -66,3 +66,12 @@ class Comment(TimeStamp):
 
     class Meta:
         db_table = "comments"
+
+
+class ReviewImage(models.Model):
+    review = models.ForeignKey("Review", on_delete=models.CASCADE)
+    order = models.IntegerField()
+    url = models.CharField(max_length=200)
+
+    class Meta:
+        db_table = "review_images"
