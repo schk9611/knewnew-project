@@ -38,10 +38,12 @@ class Review(TimeStamp):
     retailer = models.ForeignKey("Retailer", on_delete=models.SET_NULL, null=True)
     description = models.TextField()
     view_count = models.IntegerField(default=0)
+    comment_count = models.IntegerField(default=0)
     quotation_count = models.IntegerField(default=0)
     like_count = models.IntegerField(default=0)
     bookmark_count = models.IntegerField(default=0)
     share_count = models.IntegerField(default=0)
+    is_updated = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
 
     class Meta:
@@ -62,6 +64,7 @@ class Comment(TimeStamp):
     user = models.ForeignKey("user.User", on_delete=models.CASCADE)
     description = models.CharField(max_length=200)
     like_count = models.IntegerField(default=0)
+    is_updated = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
     class Meta:
