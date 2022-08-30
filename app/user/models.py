@@ -20,7 +20,7 @@ class UserCommentLike(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = "users_comment_likes"
+        db_table = "users_comments_likes"
 
 
 class AuthUser(TimeStamp):
@@ -45,7 +45,7 @@ class UserReviewLike(CreatedTimeStamp):
     review = models.ForeignKey(Review, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = "user_review_likes"
+        db_table = "users_reviews_likes"
 
 
 class UserReviewBookmark(CreatedTimeStamp):
@@ -53,4 +53,4 @@ class UserReviewBookmark(CreatedTimeStamp):
     review = models.ForeignKey(Review, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = "user_review_bookmarks"
+        db_table = "users_reviews_bookmarks"
