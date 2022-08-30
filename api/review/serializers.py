@@ -64,7 +64,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_tag(self, obj):
         # tag = obj.userintroductiontag_set.get(introduction_tag__step="1").introduction_tag
-        tag = obj.introduction_tag.get(step="1")
+        tag = obj.introduction_tags.get(step="1")
         return tag.name
 
 
