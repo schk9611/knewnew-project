@@ -19,12 +19,17 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
     # )  # 숫자값으로 들어옴 1/ 2/ 3/ 4
 
     # food tags 필수 텍스트로 받음 여러개 가능
-    food_tags = serializers.SerializerMethodField()
+    food_tags = serializers.SlugRelatedField(
+        queryset=FoodTag.objects.all(), many=True, slug_field="name"
+    )
 
     # retailer = 텍스트로받음 get_or_create
-    retailer = serializers.SerializerMethodField()
-    # product = 텍스트로받음 get_or_create
-    product = serializers.SerializerMethodField()
+    # retailer = serializers.SlugRelatedField(queryset=Retailer.objects.all(), slug_field="name")
+    retailer = serializers.CharField()
+
+    # # product = 텍스트로받음 get_or_create
+    # product = serializers.SlugRelatedField(queryset=Product.objects.all(), slug_field="name")
+    product = serializers.CharField()
 
     # images 여러개
 
@@ -34,19 +39,15 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
         model = Review
         fields = "__all__"
 
-    def get_food_tags(self, obj):
-        queryset = FoodTag.objects.filter(name=obj.food_tags)
-        return FoodTagSerializer(instance=queryset, many=True).data
+    def validate(self, attrs):
 
-    # def get_retailer(self, obj):
-    #     queryset = Retailer.objects.filter(name=obj.food_tags)
-    #     return FoodTagSerializer(instance=queryset, many=True).data
-    def get_retailer(self, obj):
-        print(obj)
-        return Retailer.objects.get(name=obj.retailer).name
+        print(attrs["retailer"])
+        retailer, created = Retailer.objects.get_or_create(name=attrs["retailer"])
+        product, created = Product.objects.get_or_create(name=attrs["product"])
+        attrs["retailer"] = retailer
+        attrs["product"] = product
 
-    def get_product(self, obj):
-        return Retailer.objects.get(name=obj.product)
+        return attrs
 
 
 class ImageListSerializer(serializers.ModelSerializer):
