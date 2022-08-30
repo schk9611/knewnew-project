@@ -9,6 +9,7 @@ class User(TimeStamp):
     profile_image = models.CharField(max_length=200, null=True)
     headline = models.CharField(max_length=200, null=True)
     is_active = models.BooleanField()
+    introduction_tag = models.ManyToManyField("IntroductionTag", related_name="user")
 
     class Meta:
         db_table = "users"
@@ -37,14 +38,6 @@ class IntroductionTag(models.Model):
 
     class Meta:
         db_table = "introduction_tags"
-
-
-class UserIntroductionTag(models.Model):
-    user = models.ForeignKey("User", on_delete=models.CASCADE)
-    introduction_tag = models.ForeignKey("IntroductionTag", on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = "user_introduction_tags"
 
 
 class UserReviewLike(CreatedTimeStamp):

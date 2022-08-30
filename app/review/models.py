@@ -45,17 +45,10 @@ class Review(TimeStamp):
     share_count = models.IntegerField(default=0)
     is_updated = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
+    food_tags = models.ManyToManyField("FoodTag", related_name="review")
 
     class Meta:
         db_table = "reviews"
-
-
-class ReviewFoodTag(models.Model):
-    review = models.ForeignKey("Review", on_delete=models.CASCADE)
-    food_tag = models.ForeignKey("FoodTag", on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = "review_food_tags"
 
 
 class Comment(TimeStamp):
