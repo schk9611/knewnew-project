@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
+        migrations.RemoveField(
             model_name="review",
             name="user_bookmarks",
             field=models.ManyToManyField(
@@ -20,7 +20,25 @@ class Migration(migrations.Migration):
                 to="user.user",
             ),
         ),
-        migrations.AlterField(
+        migrations.AddField(
+            model_name="review",
+            name="user_bookmarks",
+            field=models.ManyToManyField(
+                related_name="bookmark_reviews",
+                through="user.UserReviewBookmark",
+                to="user.user",
+            ),
+        ),
+        migrations.RemoveField(
+            model_name="review",
+            name="user_likes",
+            field=models.ManyToManyField(
+                related_name="like_reviews",
+                through="user.UserReviewLike",
+                to="user.user",
+            ),
+        ),
+        migrations.AddField(
             model_name="review",
             name="user_likes",
             field=models.ManyToManyField(
