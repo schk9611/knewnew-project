@@ -9,7 +9,7 @@ class User(TimeStamp):
     profile_image = models.CharField(max_length=200, null=True)
     headline = models.CharField(max_length=200, null=True)
     is_active = models.BooleanField()
-    introduction_tag = models.ManyToManyField("IntroductionTag", related_name="user")
+    introduction_tags = models.ManyToManyField("IntroductionTag", related_name="users")
 
     class Meta:
         db_table = "users"
@@ -20,7 +20,7 @@ class UserCommentLike(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = "user_comment_likes"
+        db_table = "users_comment_likes"
 
 
 class AuthUser(TimeStamp):

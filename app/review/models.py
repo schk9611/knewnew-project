@@ -45,7 +45,8 @@ class Review(TimeStamp):
     share_count = models.IntegerField(default=0)
     is_updated = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
-    food_tags = models.ManyToManyField("FoodTag", related_name="review")
+    food_tags = models.ManyToManyField("FoodTag", related_name="reviews")
+    # user_bookmarks =models.ManyToManyField("user.User", related_name="")
 
     class Meta:
         db_table = "reviews"
@@ -59,6 +60,9 @@ class Comment(TimeStamp):
     like_count = models.IntegerField(default=0)
     is_updated = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    user_likes = models.ManyToManyField(
+        "user.User", related_name="comments", through="user.UserCommentLike"
+    )
 
     class Meta:
         db_table = "comments"
