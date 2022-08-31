@@ -10,13 +10,21 @@ class FoodTagSerializer(serializers.ModelSerializer):
         fields = ["name"]
 
 
+class ImageSaveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReviewImage
+        fields = "__all__"
+
+
 class ReviewCreateSerializer(serializers.ModelSerializer):
 
-    # user = serializers.PrimaryKeyRelatedField(required=True, queryset=User.objects.all())
-    # parent_review = serializers.PrimaryKeyRelatedField(queryset=Review.objects.all())
-    # reaction = serializers.PrimaryKeyRelatedField(
-    #     required=True, queryset=Reaction.objects.all()
-    # )  # 숫자값으로 들어옴 1/ 2/ 3/ 4
+    user = serializers.PrimaryKeyRelatedField(required=True, queryset=User.objects.all())
+    parent_review = serializers.PrimaryKeyRelatedField(
+        queryset=Review.objects.all(), required=False
+    )
+    reaction = serializers.PrimaryKeyRelatedField(
+        required=True, queryset=Reaction.objects.all()
+    )  # 숫자값으로 들어옴 1/ 2/ 3/ 4
 
     # food tags 필수 텍스트로 받음 여러개 가능
     food_tags = serializers.SlugRelatedField(
@@ -31,7 +39,8 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
     # product = serializers.SlugRelatedField(queryset=Product.objects.all(), slug_field="name")
     product = serializers.CharField()
 
-    # images 여러개
+    # images 여러개 many=true
+    images = ImageSaveSerializer(many=True)
 
     is_active = serializers.BooleanField(default=True)
 
@@ -40,14 +49,19 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def validate(self, attrs):
-
-        print(attrs["retailer"])
-        retailer, created = Retailer.objects.get_or_create(name=attrs["retailer"])
-        product, created = Product.objects.get_or_create(name=attrs["product"])
+        retailer, _ = Retailer.objects.get_or_create(name=attrs["retailer"])
+        product, _ = Product.objects.get_or_create(name=attrs["product"])
         attrs["retailer"] = retailer
         attrs["product"] = product
 
         return attrs
+
+    # def create(self, validated_data):
+    #     images_data = validated_data.pop('images')
+    #     album = Album.objects.create(**validated_data)
+    #     for track_data in images_data:
+    #         Track.objects.create(album=album, **track_data)
+    #     return album
 
 
 class ImageListSerializer(serializers.ModelSerializer):

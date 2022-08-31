@@ -12,7 +12,6 @@ class ReviewListCreateAPIView(ListCreateAPIView):
     # 로그인한애는 is authenticated 함수true반환
 
     def get_serializer_class(self):
-        print(self.request.data)
         if self.request.method == "GET":
             return serializers.ReviewListSerializer
         if self.request.method == "POST":
