@@ -20,7 +20,7 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
 
     user = serializers.PrimaryKeyRelatedField(required=True, queryset=User.objects.all())
     parent_review = serializers.PrimaryKeyRelatedField(
-        queryset=Review.objects.all(), required=False
+        queryset=Review.objects.all(), required=False, allow_null=True
     )
     reaction = serializers.PrimaryKeyRelatedField(
         required=True, queryset=Reaction.objects.all()
