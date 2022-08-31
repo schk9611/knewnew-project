@@ -7,13 +7,13 @@ from app.user.models import User
 class FoodTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = FoodTag
-        fields = ["name"]
+        fields = "__all__"
 
 
 class ImageSaveSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReviewImage
-        fields = "__all__"
+        fields = ["order", "url"]
 
 
 class ReviewCreateSerializer(serializers.ModelSerializer):
@@ -27,20 +27,15 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
     )  # 숫자값으로 들어옴 1/ 2/ 3/ 4
 
     # food tags 필수 텍스트로 받음 여러개 가능
-    food_tags = serializers.SlugRelatedField(
-        queryset=FoodTag.objects.all(), many=True, slug_field="name"
-    )
-
-    # retailer = 텍스트로받음 get_or_create
-    # retailer = serializers.SlugRelatedField(queryset=Retailer.objects.all(), slug_field="name")
+    # food_tags = serializers.SlugRelatedField(
+    #     queryset=FoodTag.objects.all(), many=True, slug_field="name"
+    # )
+    food_tags = FoodTagSerializer(many=True)
     retailer = serializers.CharField()
-
-    # # product = 텍스트로받음 get_or_create
-    # product = serializers.SlugRelatedField(queryset=Product.objects.all(), slug_field="name")
     product = serializers.CharField()
 
     # images 여러개 many=true
-    images = ImageSaveSerializer(many=True)
+    reviewimage_set = ImageSaveSerializer(many=True, required=False)
 
     is_active = serializers.BooleanField(default=True)
 
@@ -49,6 +44,7 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def validate(self, attrs):
+        print(attrs)
         retailer, _ = Retailer.objects.get_or_create(name=attrs["retailer"])
         product, _ = Product.objects.get_or_create(name=attrs["product"])
         attrs["retailer"] = retailer
@@ -56,12 +52,16 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
 
         return attrs
 
-    # def create(self, validated_data):
-    #     images_data = validated_data.pop('images')
-    #     album = Album.objects.create(**validated_data)
-    #     for track_data in images_data:
-    #         Track.objects.create(album=album, **track_data)
-    #     return album
+    def create(self, validated_data):
+        images_data = validated_data.pop("reviewimage_set")
+        food_tags_data = validated_data.pop("food_tags")
+        review = Review.objects.create(**validated_data)
+        for image_data in images_data:
+            ReviewImage.objects.create(review=review, **image_data)
+        food_tag_names = [food_tag_data["name"] for food_tag_data in food_tags_data]
+        food_tags = FoodTag.objects.filter(name__in=food_tag_names)
+        review.food_tags.set(food_tags)
+        return review
 
 
 class ImageListSerializer(serializers.ModelSerializer):
@@ -78,7 +78,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ["id", "nickname", "profile_image", "tag"]
 
     def get_tag(self, obj):
-        # tag = obj.userintroductiontag_set.get(introduction_tag__step="1").introduction_tag
         tag = obj.introduction_tags.get(step="1")
         return tag.name
 
@@ -138,18 +137,19 @@ class ReviewListSerializer(ParentReviewSerializer):
 
     class Meta:
         model = Review
-        fields = [
-            "id",
-            "user",
-            "reaction",
-            "retailer",
-            "product",
-            "description",
-            "images",
-            "parent_review",
-            "view_count",
-            "comment_count",
-            "like_count",
-            "bookmark_count",
-            "is_updated",
-        ]
+        fields = "__all__"
+        # [
+        #     "id",
+        #     "user",
+        #     "reaction",
+        #     "retailer",
+        #     "product",
+        #     "description",
+        #     "images",
+        #     "parent_review",
+        #     "view_count",
+        #     "comment_count",
+        #     "like_count",
+        #     "bookmark_count",
+        #     "is_updated",
+        # ]
