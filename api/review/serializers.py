@@ -18,24 +18,18 @@ class ImageSaveSerializer(serializers.ModelSerializer):
 
 class ReviewCreateSerializer(serializers.ModelSerializer):
 
-    user = serializers.PrimaryKeyRelatedField(required=True, queryset=User.objects.all())
+    user = serializers.PrimaryKeyRelatedField(
+        required=True, queryset=User.objects.all()
+    )  # 쿼리셋에해당오브젝트가있는지validate에서확인
     parent_review = serializers.PrimaryKeyRelatedField(
         queryset=Review.objects.all(), required=False, allow_null=True
     )
-    reaction = serializers.PrimaryKeyRelatedField(
-        required=True, queryset=Reaction.objects.all()
-    )  # 숫자값으로 들어옴 1/ 2/ 3/ 4
-
-    # food tags 필수 텍스트로 받음 여러개 가능
-    # food_tags = serializers.SlugRelatedField(
-    #     queryset=FoodTag.objects.all(), many=True, slug_field="name"
-    # )
+    reaction = serializers.PrimaryKeyRelatedField(required=True, queryset=Reaction.objects.all())
     food_tags = FoodTagSerializer(many=True)
-    retailer = serializers.CharField()
+    retailer = serializers.CharField()  # validate역할:데이터가 char인지확인
     product = serializers.CharField()
 
-    # images 여러개 many=true
-    reviewimage_set = ImageSaveSerializer(many=True, required=False)
+    images = ImageSaveSerializer(many=True, required=False)
 
     is_active = serializers.BooleanField(default=True)
 
@@ -53,13 +47,17 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        images_data = validated_data.pop("reviewimage_set")
+        images_data = validated_data.pop("images")
         food_tags_data = validated_data.pop("food_tags")
+
         review = Review.objects.create(**validated_data)
+
         for image_data in images_data:
             ReviewImage.objects.create(review=review, **image_data)
+
         food_tag_names = [food_tag_data["name"] for food_tag_data in food_tags_data]
         food_tags = FoodTag.objects.filter(name__in=food_tag_names)
+
         review.food_tags.set(food_tags)
         return review
 
@@ -138,18 +136,3 @@ class ReviewListSerializer(ParentReviewSerializer):
     class Meta:
         model = Review
         fields = "__all__"
-        # [
-        #     "id",
-        #     "user",
-        #     "reaction",
-        #     "retailer",
-        #     "product",
-        #     "description",
-        #     "images",
-        #     "parent_review",
-        #     "view_count",
-        #     "comment_count",
-        #     "like_count",
-        #     "bookmark_count",
-        #     "is_updated",
-        # ]
