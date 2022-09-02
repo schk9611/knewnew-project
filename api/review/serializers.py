@@ -32,7 +32,6 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def validate(self, attrs):
-        print(attrs)
         retailer, _ = Retailer.objects.get_or_create(name=attrs["retailer"])
         product, _ = Product.objects.get_or_create(name=attrs["product"])
         attrs["retailer"] = retailer
