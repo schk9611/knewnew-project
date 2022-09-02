@@ -1,13 +1,8 @@
 from rest_framework import serializers
+from rest_framework.serializers import HiddenField, CurrentUserDefault
 
 from app.review.models import FoodTag, Product, Retailer, Review, Reaction, ReviewImage
 from app.user.models import User
-
-
-class FoodTagSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FoodTag
-        fields = "__all__"
 
 
 class ImageSaveSerializer(serializers.ModelSerializer):
@@ -18,14 +13,13 @@ class ImageSaveSerializer(serializers.ModelSerializer):
 
 class ReviewCreateSerializer(serializers.ModelSerializer):
 
-    user = serializers.PrimaryKeyRelatedField(
-        required=True, queryset=User.objects.all()
-    )  # 쿼리셋에해당오브젝트가있는지validate에서확인
+    user = serializers.PrimaryKeyRelatedField(required=True, queryset=User.objects.all())
+    # user = HiddenField(default=CurrentUserDefault()) #현재 로그인한 유저를 작성자로 넣어주는거
     parent_review = serializers.PrimaryKeyRelatedField(
         queryset=Review.objects.all(), required=False, allow_null=True
-    )
+    )  # 쿼리셋(모든리뷰)에해당 pk값을 가진 오브젝트가있는지validate에서확인한다
     reaction = serializers.PrimaryKeyRelatedField(required=True, queryset=Reaction.objects.all())
-    food_tags = FoodTagSerializer(many=True)
+    food_tags = serializers.ListSerializer(child=serializers.CharField())
     retailer = serializers.CharField()  # validate역할:데이터가 char인지확인
     product = serializers.CharField()
 
@@ -51,13 +45,10 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
         food_tags_data = validated_data.pop("food_tags")
 
         review = Review.objects.create(**validated_data)
-
         for image_data in images_data:
             ReviewImage.objects.create(review=review, **image_data)
-
-        food_tag_names = [food_tag_data["name"] for food_tag_data in food_tags_data]
-        food_tags = FoodTag.objects.filter(name__in=food_tag_names)
-
+        food_tags = FoodTag.objects.filter(name__in=food_tags_data)
+        # 없는거 넣었을때 예외처리 필요함
         review.food_tags.set(food_tags)
         return review
 

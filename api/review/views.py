@@ -1,5 +1,5 @@
 from rest_framework.generics import ListCreateAPIView
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from . import serializers
 from app.review.models import Review
