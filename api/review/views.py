@@ -31,8 +31,6 @@ class ReviewListCreateAPIView(ListCreateAPIView):
 
 
 class PresignedUrlView(APIView):
-    permission_classes = [AllowAny]
-
     def post(self, request):
         load_dotenv()
         data = request.data
