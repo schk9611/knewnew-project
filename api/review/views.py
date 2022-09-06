@@ -1,11 +1,10 @@
 import os
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, GenericAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 import boto3
-from dotenv import load_dotenv
 
 from . import serializers
 from app.review.models import Review
@@ -30,9 +29,8 @@ class ReviewListCreateAPIView(ListCreateAPIView):
         return super().post(request, *args, **kwargs)
 
 
-class PresignedUrlView(APIView):
+class PresignedUrlAPIView(APIView):
     def post(self, request):
-        load_dotenv()
         data = request.data
         file_name = data["fileName"]
 
@@ -48,3 +46,23 @@ class PresignedUrlView(APIView):
         )
 
         return Response(response)
+
+
+class ReviewLikeView(GenericAPIView):
+    def get_serializer_class(self):
+        return serializers.ReviewLikeSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response({"user": request.user.id, "review": request.data["review"]})
+
+
+class ReviewBookmarkView(GenericAPIView):
+    def get_serializer_class(self):
+        return serializers.ReviewBookmarkSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response({"user": request.user.id, "review": request.data["review"]})

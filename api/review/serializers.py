@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.serializers import HiddenField, CurrentUserDefault
 
 from app.review.models import FoodTag, Product, Retailer, Review, Reaction, ReviewImage
-from app.user.models import User
+from app.user.models import User, UserReviewBookmark, UserReviewLike
 
 
 class ImageSaveSerializer(serializers.ModelSerializer):
@@ -40,14 +40,17 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
+        print(validated_data.get("parent_review"))  # 부모리뷰오브젝트
         images_data = validated_data.pop("images")
         food_tags_data = validated_data.pop("food_tags")
-
+        parent_review = validated_data.get("parent_review")
+        if parent_review:
+            parent_review.quotation_count += 1
+            parent_review.save()
         review = Review.objects.create(**validated_data)
         for image_data in images_data:
             ReviewImage.objects.create(review=review, **image_data)
         food_tags = FoodTag.objects.filter(name__in=food_tags_data)
-        # 없는거 넣었을때 예외처리 필요함
         review.food_tags.set(food_tags)
         return review
 
@@ -126,3 +129,51 @@ class ReviewListSerializer(ParentReviewSerializer):
     class Meta:
         model = Review
         fields = "__all__"
+
+
+class ReviewLikeSerializer(serializers.ModelSerializer):
+    user = HiddenField(default=CurrentUserDefault())
+    review = serializers.PrimaryKeyRelatedField(required=True, queryset=Review.objects.all())
+
+    class Meta:
+        model = UserReviewLike
+        fields = "__all__"
+
+    def validate(self, attrs):
+        review = attrs["review"]
+        user_review_like, created = UserReviewLike.objects.get_or_create(
+            user=attrs["user"], review=review
+        )
+        if created:
+            review.like_count += 1
+            review.save()
+        else:
+            user_review_like.delete()
+            review.like_count -= 1
+            review.save()
+
+        return attrs
+
+
+class ReviewBookmarkSerializer(serializers.ModelSerializer):
+    user = HiddenField(default=CurrentUserDefault())
+    review = serializers.PrimaryKeyRelatedField(required=True, queryset=Review.objects.all())
+
+    class Meta:
+        model = UserReviewBookmark
+        fields = "__all__"
+
+    def validate(self, attrs):
+        review = attrs["review"]
+        user_review_bookmark, created = UserReviewBookmark.objects.get_or_create(
+            user=attrs["user"], review=review
+        )
+        if created:
+            review.bookmark_count += 1
+            review.save()
+        else:
+            user_review_bookmark.delete()
+            review.bookmark_count -= 1
+            review.save()
+
+        return attrs
