@@ -98,10 +98,17 @@ class ReviewCommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ["id", "created_at", "like_count", "description", "user", "child_comments"]
+        fields = [
+            "id",
+            "created_at",
+            "like_count",
+            "description",
+            "user",
+            "child_comments",
+        ]
 
     def get_child_comments(self, obj):
-        child = obj.comment_set.all()
+        child = obj.comment_set.all().order_by("created_at")
         return ReviewCommentSerializer(instance=child, many=True).data
 
 

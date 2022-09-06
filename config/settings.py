@@ -4,8 +4,6 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 
-load_dotenv()
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
@@ -148,3 +146,5 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(hours=1),
     "ROTATE_REFRESH_TOKENS": True,
 }
+
+APPEND_SLASH = False

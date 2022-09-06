@@ -20,7 +20,9 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class CommentListCreateAPIView(generics.ListCreateAPIView):
     def get_queryset(self):
-        queryset = Comment.objects.filter(review_id=self.kwargs["pk"], parent_comment__isnull=True)
+        queryset = Comment.objects.filter(
+            review_id=self.kwargs["pk"], parent_comment__isnull=True
+        ).order_by("created_at")
         return queryset
 
     def get_serializer_class(self):
