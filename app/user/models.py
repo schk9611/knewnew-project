@@ -1,15 +1,20 @@
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser
+
 from app.core.models import TimeStamp, CreatedTimeStamp
 from app.review.models import Comment, Review
 
 
-class User(TimeStamp):
+class User(TimeStamp, AbstractBaseUser):
     nickname = models.CharField(max_length=20)
     email = models.CharField(max_length=200, null=True, unique=True)
     profile_image = models.CharField(max_length=200, null=True)
     headline = models.CharField(max_length=200, null=True)
     is_active = models.BooleanField()
     introduction_tags = models.ManyToManyField("IntroductionTag", related_name="users")
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
 
     class Meta:
         db_table = "users"

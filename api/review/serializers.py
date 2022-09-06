@@ -13,8 +13,8 @@ class ImageSaveSerializer(serializers.ModelSerializer):
 
 class ReviewCreateSerializer(serializers.ModelSerializer):
 
-    user = serializers.PrimaryKeyRelatedField(required=True, queryset=User.objects.all())
-    # user = HiddenField(default=CurrentUserDefault()) #현재 로그인한 유저를 작성자로 넣어주는거
+    # user = serializers.PrimaryKeyRelatedField(required=True, queryset=User.objects.all())
+    user = HiddenField(default=CurrentUserDefault())  # 현재 로그인한 유저를 작성자로 넣어주는거
     parent_review = serializers.PrimaryKeyRelatedField(
         queryset=Review.objects.all(), required=False, allow_null=True
     )  # 쿼리셋(모든리뷰)에해당 pk값을 가진 오브젝트가있는지validate에서확인한다
