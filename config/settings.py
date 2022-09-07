@@ -1,11 +1,11 @@
 import os
 from datetime import timedelta
 from pathlib import Path
-from datetime import timedelta
 
 from dotenv import load_dotenv
 
 load_dotenv()
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -42,9 +42,9 @@ INSTALLED_APPS = [
     "corsheaders",
     "django_extensions",
     "rest_framework",
+    "rest_framework_simplejwt",
     "app.user",
     "app.review",
-    "rest_framework_simplejwt",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
@@ -74,6 +74,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"

@@ -1,15 +1,12 @@
 import os
-from django.db.models import ExpressionWrapper, OuterRef, Subquery, BooleanField, Value, Exists
-from django.db.models.functions import Coalesce
-from rest_framework.generics import ListCreateAPIView, GenericAPIView
+from rest_framework.generics import ListCreateAPIView, GenericAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 import boto3
 
 from . import serializers
-from app.review.models import Review
-from app.user.models import UserReviewLike
+from app.review.models import Review, Comment
 
 
 class ReviewListCreateAPIView(ListCreateAPIView):
@@ -70,3 +67,26 @@ class ReviewBookmarkView(GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response({"user": request.user.id, "review": request.data["review"]})
+
+
+class ReviewDetail(RetrieveUpdateDestroyAPIView):
+    queryset = Review.objects.all()
+    serializer_class = serializers.ReviewDetailSerializer
+
+    def get(self, request, *args, **kwargs):
+        res = super().get(request, *args, **kwargs)
+        return res
+
+
+class CommentListCreateAPIView(ListCreateAPIView):
+    def get_queryset(self):
+        queryset = Comment.objects.filter(
+            review_id=self.kwargs["pk"], parent_comment__isnull=True
+        ).order_by("created_at")
+        return queryset
+
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return serializers.ReviewCommentSerializer
+        elif self.request.method == "POST":
+            return serializers.CommentCreateSerializer

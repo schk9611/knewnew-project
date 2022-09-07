@@ -8,4 +8,6 @@ urlpatterns = [
     path("image-presigned-url", views.PresignedUrlAPIView.as_view(), name="review-image-url"),
     path("like", views.ReviewLikeView.as_view(), name="review-like"),
     path("bookmark", views.ReviewBookmarkView.as_view(), name="review-bookmark"),
+    path("<int:pk>/", views.ReviewDetail.as_view()),
+    path("<int:pk>/comment/", views.CommentListCreateAPIView.as_view()),
 ]
