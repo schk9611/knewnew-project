@@ -1,4 +1,3 @@
-import requests
 from rest_framework.serializers import (
     CharField,
     BooleanField,
@@ -48,8 +47,6 @@ class UserIntroductionSerializer(ModelSerializer):
         fields = ["introduction_tags", "user"]
 
     def create(self, validated_data):
-        print(validated_data["introduction_tags"])
-        # tags = IntroductionTag.objects.filter(name__in=validated_data["introduction_tags"])
         datas = validated_data["introduction_tags"]
         for data in datas:
             user_tag, is_created = IntroductionTag.objects.get_or_create(
