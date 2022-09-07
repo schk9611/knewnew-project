@@ -42,7 +42,11 @@ class PresignedUrlAPIView(APIView):
         )
 
         response = s3_client.generate_presigned_post(
-            Bucket=os.environ.get("AWS_BUCKET_NAME"), Key=file_name, ExpiresIn=60
+            Bucket=os.environ.get("AWS_BUCKET_NAME"),
+            Key=file_name,
+            ExpiresIn=60,
+            Fields={"acl": "public-read"},
+            Conditions=[{"acl": "public-read"}],
         )
 
         return Response(response)

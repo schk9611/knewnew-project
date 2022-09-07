@@ -42,7 +42,6 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        print(validated_data.get("parent_review"))  # 부모리뷰오브젝트
         images_data = validated_data.pop("images")
         food_tags_data = validated_data.pop("food_tags")
         parent_review = validated_data.get("parent_review")
@@ -50,8 +49,11 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
             parent_review.quotation_count += 1
             parent_review.save()
         review = Review.objects.create(**validated_data)
-        for image_data in images_data:
-            ReviewImage.objects.create(review=review, **image_data)
+
+        ReviewImage.objects.bulk_create(
+            [ReviewImage(review=review, **image_data) for image_data in images_data]
+        )
+
         food_tags = FoodTag.objects.filter(name__in=food_tags_data)
         review.food_tags.set(food_tags)
         return review
