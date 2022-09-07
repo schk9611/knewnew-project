@@ -1,3 +1,5 @@
+from django.db.models import ExpressionWrapper, OuterRef, Subquery, BooleanField, Value, Exists
+from django.db.models.functions import Coalesce
 from rest_framework import serializers
 from rest_framework.serializers import HiddenField, CurrentUserDefault
 
@@ -20,8 +22,8 @@ class ReviewCreateSerializer(serializers.ModelSerializer):
     )  # 쿼리셋(모든리뷰)에해당 pk값을 가진 오브젝트가있는지validate에서확인한다
     reaction = serializers.PrimaryKeyRelatedField(required=True, queryset=Reaction.objects.all())
     food_tags = serializers.ListSerializer(child=serializers.CharField())
-    retailer = serializers.CharField()  # validate역할:데이터가 char인지확인
-    product = serializers.CharField()
+    retailer = serializers.CharField(allow_blank=True)  # validate역할:데이터가 char인지확인
+    product = serializers.CharField(allow_blank=True)
 
     images = ImageSaveSerializer(many=True, required=False)
 

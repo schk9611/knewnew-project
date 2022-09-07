@@ -1,6 +1,5 @@
 import os
 from rest_framework.generics import ListCreateAPIView, GenericAPIView
-from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -8,6 +7,7 @@ import boto3
 
 from . import serializers
 from app.review.models import Review
+from app.user.models import UserReviewLike
 
 
 class ReviewListCreateAPIView(ListCreateAPIView):
