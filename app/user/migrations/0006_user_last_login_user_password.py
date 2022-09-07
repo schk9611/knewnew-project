@@ -13,9 +13,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="user",
             name="last_login",
-            field=models.DateTimeField(
-                blank=True, null=True, verbose_name="last login"
-            ),
+            field=models.DateTimeField(blank=True, null=True, verbose_name="last login"),
         ),
         migrations.AddField(
             model_name="user",

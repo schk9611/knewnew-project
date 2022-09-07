@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser
+
 from app.core.models import TimeStamp, CreatedTimeStamp
 from app.review.models import Comment, Review
 from django.contrib.auth.models import AbstractBaseUser
