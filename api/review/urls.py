@@ -1,9 +1,13 @@
 from django.urls import path
 
-from api.review.views import ReviewDetail, CommentListCreateAPIView
+from . import views
 
 
 urlpatterns = [
-    path("<int:pk>/", ReviewDetail.as_view()),
-    path("<int:pk>/comment/", CommentListCreateAPIView.as_view()),
+    path("", views.ReviewListCreateAPIView.as_view(), name="review_list_create"),
+    path("image-presigned-url", views.PresignedUrlAPIView.as_view(), name="review-image-url"),
+    path("like", views.ReviewLikeView.as_view(), name="review-like"),
+    path("bookmark", views.ReviewBookmarkView.as_view(), name="review-bookmark"),
+    path("<int:pk>/", views.ReviewDetail.as_view()),
+    path("<int:pk>/comment/", views.CommentListCreateAPIView.as_view()),
 ]
