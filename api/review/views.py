@@ -13,8 +13,6 @@ from app.user.models import UserReviewLike
 class ReviewListCreateAPIView(ListCreateAPIView):
 
     queryset = Review.objects.filter(is_active=True).order_by("-created_at")
-    # permission_classes = [AllowAny]
-    # 로그인한애는 is authenticated 함수true반환
 
     def get_serializer_class(self):
         if self.request.method == "GET":

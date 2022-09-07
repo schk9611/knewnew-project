@@ -15,14 +15,13 @@ class ImageSaveSerializer(serializers.ModelSerializer):
 
 class ReviewCreateSerializer(serializers.ModelSerializer):
 
-    # user = serializers.PrimaryKeyRelatedField(required=True, queryset=User.objects.all())
-    user = HiddenField(default=CurrentUserDefault())  # 현재 로그인한 유저를 작성자로 넣어주는거
+    user = HiddenField(default=CurrentUserDefault())
     parent_review = serializers.PrimaryKeyRelatedField(
         queryset=Review.objects.all(), required=False, allow_null=True
-    )  # 쿼리셋(모든리뷰)에해당 pk값을 가진 오브젝트가있는지validate에서확인한다
+    )
     reaction = serializers.PrimaryKeyRelatedField(required=True, queryset=Reaction.objects.all())
     food_tags = serializers.ListSerializer(child=serializers.CharField())
-    retailer = serializers.CharField(allow_blank=True)  # validate역할:데이터가 char인지확인
+    retailer = serializers.CharField(allow_blank=True)
     product = serializers.CharField(allow_blank=True)
 
     images = ImageSaveSerializer(many=True, required=False)
