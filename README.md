@@ -32,6 +32,7 @@
 <img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=Django&logoColor=white"/>&nbsp;
 <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=PostgreSQL&logoColor=white"/>&nbsp;
 <img src="https://img.shields.io/badge/Poetry-60A5FA?style=for-the-badge&logo=Poetry&logoColor=white"/>&nbsp;
+<img src="https://img.shields.io/badge/Amazon_S3-569A31?style=for-the-badge&logo=Amazon_S3&logoColor=white"/>&nbsp;
 
 ## 협업 툴
 <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=MySQL&logoColor=white"/>&nbsp;
