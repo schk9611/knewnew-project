@@ -1,6 +1,4 @@
-# 뉴뉴 (Knewnew)::PC버전 🍭
-
-<img src="https://user-images.githubusercontent.com/104430030/188837571-d895300c-0e2b-4cb9-907d-015b96852369.JPG" alt="teamKnewnew" width="500px" />
+# 뉴뉴 (Knewnew)
 
 ## 개발 인원 및 기간
 
@@ -9,6 +7,8 @@
   - Front-end : 김광희, 손민지, 정훈조
   - Back-end : 손찬규(PM), 안상현, 음정민
 
+<br>
+
 ## 프로젝트 소개
 
 모바일 어플리케이션 뉴뉴(Knewnew)의 PC버전 페이지 제작을 위한 프로젝트 입니다.<br>
@@ -16,6 +16,14 @@
 식품에 대한 후기를 카테고리 별로 게시하고 조회하며 소통하는 **커뮤니티 기능에 중점**을 두고 있습니다.<br>
 기존 어플리케이션 '뉴뉴(Knewnew)'는 React Native로 구현되었으나 PC버전은 React.js로 구현되어<br>
 디자인 모티브만 가져왔을 뿐 개발은 초기 세팅부터 모두 직접 구현하였습니다.<br>
+
+<br>
+
+## 시연 영상
+
+[🍭뉴뉴 (Knewnew)](http://www.youtube.com/)
+
+<br>
 
 ## 사용기술 스택
 
@@ -34,6 +42,8 @@
 <img src="https://img.shields.io/badge/Poetry-60A5FA?style=for-the-badge&logo=Poetry&logoColor=white"/>&nbsp;
 <img src="https://img.shields.io/badge/Amazon_S3-569A31?style=for-the-badge&logo=Amazon_S3&logoColor=white"/>&nbsp;
 
+<br>
+
 ## 협업 툴
 <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=MySQL&logoColor=white"/>&nbsp;
 <img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=Slack&logoColor=white"/>&nbsp;
@@ -41,61 +51,51 @@
 <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white"/>&nbsp;
 <img src="https://img.shields.io/badge/Github-181717?style=for-the-badge&logo=Github&logoColor=white"/>&nbsp;
 
+<br>
 
 ## 구현 
 
-### Sign in : 로그인 페이지
-- 소셜 로그인
-    - 카카오
-    - 네이버
+### ERD
+![knewnew_ERD](https://user-images.githubusercontent.com/60742666/208109581-55ffae59-6da6-4309-b8c3-d833534194e1.png)
 
-### Option Info : 추가 정보 페이지
-- 로그인 이후 추가 정보 수집 후 저장
+### API EndPoint
 
-### My : 마이 페이지
-- 로그인한 사용자의 정보 조회
-- 로그아웃
+|URI|METHOD|DESC|
+|---|---|---|
+|/user/login/\<str:social_type\>|POST|소셜로그인|
+|/user/mypage|GET|회원프로필|
+|/user/introduction|POST|회원 추가정보 기입|
+|/review|GET|리뷰 리스트보기|
+|/review|POST|리뷰 작성하기|
+|/review/\<id:int\>|GET|리뷰 상세보기|
+|/review/\<id:int\>|PATCH|리뷰 수정하기|
+|/review/\<id:int\>|DELETE|리뷰 삭제하기|
+|/review/image-presigned-url|POST|이미지 presigned url 받기|
+|/review/like|POST|리뷰 좋아요/해제|
+|/review/bookmark|POST|리뷰 북마크/해제|
+|/review/\<id:int\>/comment|GET|리뷰 댓글보기|
+|/review/\<id:int\>/comment|POST|리뷰 댓글 생성하기|
+|/review/\<id:int\>/comment/\<id:int\>|PATCH|리뷰 댓글 수정하기|
+|/review/\<id:int\>/comment/\<id:int\>|DELETE|리뷰 댓글 삭제하기|
 
-### Main(=List) : 리스트 페이지
-- 게시글 리스트 조회
-- 무한스크롤
+### 담당 역할
 
-### Posting : 글쓰기 페이지
-- Form data를 이용한 입력 데이터 전송
-- S3 - pre signed URL을 이용한 이미지 파일 업로드
+- review의 상세 페이지 구현 담당
+- review의 댓글 기능 구현 담당
 
-### Detail : 상세 페이지
-- 게시글
-    - 조회 GET
-    - 삭제 DELETE
-- 댓글
-    - 조회 GET
-    - 생성 POST
+### 가상 환경 세팅
 
-### 기타 페이지
-- 모바일 앱 연계 모달창
-- Nav / Footer
-- 잘못된 접근 시 활용 가능한 404 페이지
+- poetry를 통해 가상환경 및 의존성&버전 관리를 진행하였습니다.
 
-## 시연 영상
+### 시크릿 키 및 보안 사항
 
-[🍭뉴뉴 (Knewnew)](http://www.youtube.com/)
-
-### 메인(=리스트) 페이지
-- 비로그인 사용자도 조회는 가능하나 수정, 삭제 등의 조작은 로그인 사용자만 가능하도록 구현 
-
-### 소셜 로그인 및 로그아웃
-- Kakao / Naver OAuth 2.0 API를 이용한 소셜 로그인 기능 구현
-- JWT를 이용한 인증
-- Refresh Token을 이용한 토큰 보안 강화
-- 전역에서 Token의 상태 관리를 하기 위해 Redux 활용
-- 로그아웃 기능 구현
-
-### 글쓰기 페이지
-- Form Data를 활용한 게시글 전송 기능 구현
-- S3와 pre signed URL을 이용한 이미지 파일 업로드 기능 구현
+- python-dotenv 패키지를 통해 `.env` 파일로 프로젝트의 시크릿 키와 DB 관련 사항들을 보안 처리하였습니다.
 
 ### 게시글 상세 페이지
-- 게시글 조회, 삭제 기능 구현
-- 댓글 및 대댓글의 생성, 삭제 기능 구현
+- DRF의 특성을 이용하여 `settings.py` 에서 'REST_FRAMEWORK'의 'DEFAULT_PERMISSION_CLASSES'를 'rest_framework.permissions.IsAuthenticatedOrReadOnly'로 설정하여 비로그인 사용자도 조회는 가능하나 수정, 삭제 등의 조작은 로그인 사용자만 가능하도록 구현하였습니다.
+- 사용자에 대한 관리는 JWT를 사용하여 access token과 refresh token을 통해 유저를 구분하도록 하였습니다.
 
+
+### 댓글 기능 구현
+- review의 `views.py`에서 `ListCreateAPIView'를 상속받아 댓글 기능을 구현하였습니다. 이 때 메소드의 분기를 설정하기 위해 'get_serialzier_class'를 작성하고 'GET' 메소드 요청일 때와 'POST' 메소드 요청일 때를 나누어 진행하였습니다.
+- 댓글 기능 또한 사용자를 구분하여 조회 기능과 수정/삭제 기능을 진행할 수 있도록 구현하였습니다.
