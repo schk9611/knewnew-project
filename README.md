@@ -78,7 +78,7 @@
 |/review/\<id:int\>/comment/\<id:int\>|PATCH|리뷰 댓글 수정하기|
 |/review/\<id:int\>/comment/\<id:int\>|DELETE|리뷰 댓글 삭제하기|
 
-### 담당 역할
+### 담당 역할(Back-end)
 
 - review의 상세 페이지 구현 담당
 - review의 댓글 기능 구현 담당
