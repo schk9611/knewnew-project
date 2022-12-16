@@ -21,7 +21,7 @@
 
 ## 시연 영상
 
-[🍭뉴뉴 (Knewnew)](http://www.youtube.com/)
+[🍭뉴뉴 (Knewnew)](https://www.youtube.com/watch?v=T7NdgYqNdog)
 
 <br>
 
