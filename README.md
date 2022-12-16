@@ -1,15 +1,20 @@
 # 뉴뉴 (Knewnew)
 
-## 개발 인원 및 기간
+## 🗓 개발 일정
 
 - 개발 기간 : 2022/8/16 ~ 2022/9/7 (3주)
+
+<br>
+
+## 👤 개발 인원 및 기간
+
 - 개발 인원 : FE 3명, BE 3명
   - Front-end : 김광희, 손민지, 정훈조
   - Back-end : 손찬규(PM), 안상현, 음정민
 
 <br>
 
-## 프로젝트 소개
+## 💡 프로젝트 소개
 
 모바일 어플리케이션 뉴뉴(Knewnew)의 PC버전 페이지 제작을 위한 프로젝트 입니다.<br>
 [뉴뉴(Knewnew)](https://play.google.com/store/apps/details?id=com.mealing.knewnnew)는 수많은 온라인 식품 선택지 속에서 유저 간 추천을 통해 원하는 식품을 손쉽게 발견할 수 있는 **데이터 기반 푸드 포털 플랫폼**입니다.<br>
@@ -19,13 +24,13 @@
 
 <br>
 
-## 시연 영상
+## 🖥 시연 영상
 
 [🍭뉴뉴 (Knewnew)](https://www.youtube.com/watch?v=T7NdgYqNdog)
 
 <br>
 
-## 사용기술 스택
+## 🧰 사용기술 스택
 
 ### Front-end<br>
 ![React Badge](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white)&nbsp;
@@ -44,7 +49,7 @@
 
 <br>
 
-## 협업 툴
+## 🛠 협업 툴
 <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=MySQL&logoColor=white"/>&nbsp;
 <img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=Slack&logoColor=white"/>&nbsp;
 <img src="https://img.shields.io/badge/Trello-0052CC?style=for-the-badge&logo=Trello&logoColor=white"/>&nbsp;
@@ -53,7 +58,7 @@
 
 <br>
 
-## 구현 
+## 🏠 구현 
 
 ### ERD
 ![knewnew_ERD](https://user-images.githubusercontent.com/60742666/208109581-55ffae59-6da6-4309-b8c3-d833534194e1.png)
